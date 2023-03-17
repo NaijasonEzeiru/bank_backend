@@ -69,7 +69,8 @@ exports.login = async (req, res) => {
       res
         .cookie("access_token", accessToken, {
           httpOnly: true,
-          origin: "http://localhost:3000",
+          // origin: "http://localhost:3000",
+          origin: "https://kesa-bank-sigma.vercel.app/",
           // secure: true,
           secure: process.env.NODE_ENV === "production",
           // Access-Control-Allow-Origin: "http://localhost:3000",
