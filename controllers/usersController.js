@@ -36,6 +36,27 @@ exports.getAllUsers = async ( req, res) => {
   }
 };
 
+exports.updateAdmin = async (req, res) => {
+  if (req.body.password) {
+    req.body.password = CryptoJS.AES.encrypt(
+      req.body.password,
+      process.env.PASSWORD_SECRET
+    ).toString();
+  }
+  try {
+    const updatedAdmin = await prisma.user.update({
+      where: {
+        account_no: +req.params.account_no,
+      },
+      data: {
+        isAdmin: req.body.isAdmin
+      }
+    });
+    res.status(201).json(updatedAdmin);
+  } catch (err) {
+    res.status(500).json({ err, message: "Operation failed" });
+  }
+};
 exports.updateUser = async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(

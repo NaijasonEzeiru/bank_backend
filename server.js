@@ -9,14 +9,16 @@ const userRouter = require("./routes/api/user");
 const adminRouter = require("./routes/api/admin");
 
 // app.use(cors(corsOptions));
-app.use(cors({origin:["https://kesa-bank-sigma.vercel.app"], credentials: true}))
+// app.use(cors({origin:["https://kesa-bank-sigma.vercel.app"], credentials: true}))
+app.use(cors({origin:["http://localhost:3000"], credentials: true}))
 
 const corsConfig = {
   origin: true,
   credentials: true
 }
 
-app.options("https://kesa-bank-sigma.vercel.app", cors(corsConfig))
+// app.options("https://kesa-bank-sigma.vercel.app", cors(corsConfig))
+app.options("http://localhost:3000/", cors(corsConfig))
 
 app.use(express.json());
 app.use(cookieParser())
