@@ -38,24 +38,24 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  // console.log(`${email} and ${password}`)
-  try {
+  const { email, password } = req.body.loginInfo;
+  console.log(req.body)
+  console.log(`${email} and ${password}`)
+ if (email) {try {
     const user = await prisma.user.findUnique({
       where: {
         email,
       },
     });
-    // console.log(user);
-    if (!user) {return res.status(401).json({message: "Email address is not registered"})};
-    // user.account_no = 1002784563 + user.account_no
+    if (!user) { res.status(401).json({message: "Email address is not registered", statusCode: 401})}
+  else {
     const { password_hash, ...rest } = user;
     const unhashedPassword = CryptoJS.AES.decrypt(
       password_hash,
       process.env.PASSWORD_SECRET
     ).toString(CryptoJS.enc.Utf8);
     if (password !== unhashedPassword) {
-      res.status(401).json({ message: "Incorrect password. Try again" });
+      res.status(401).json({ message: "Incorrect password. Try again", statusCode: 401});
     } else {
       const accessToken = jwt.sign(
         {
@@ -63,32 +63,38 @@ exports.login = async (req, res) => {
           is_admin: user.is_admin,
         },
         process.env.JWT_SECRET,
-        { expiresIn: "3d" }
+        { expiresIn: "30d" }
       );
     rest.account_no = 1002784563 + rest.account_no
       res
-        .cookie("access_token", accessToken, {
-          httpOnly: true,
-          // origin: "http://localhost:3000",
-          origin: "https://kesa-bank-sigma.vercel.app",
-          // secure: true,
-          // secure: process.env.NODE_ENV === "production",
-          // Access-Control-Allow-Origin: "http://localhost:3000",
+        // .cookie("access_token", accessToken, {
+        //   httpOnly: true,
+        //   // origin: "http://localhost:3000",
+        //   origin: "https://kesa-bank-sigma.vercel.app",
+        //   // secure: true,
+        //   // secure: process.env.NODE_ENV === "production",
+        //   // Access-Control-Allow-Origin: "http://localhost:3000",
           
-        })
+        // })
         .status(201)
-        .json({ ...rest, Message: "logged in successfully" });
-    }
+        .json({ ...rest, Message: "logged in successfully", jwt: accessToken });
+    }}
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json(err, {statusCode: 500});
+  }} else { 
+    res.status(401).json({ message: "No Email Provided", statusCode: 401});
+
   }
 };
 
 exports.me = async(req, res) => {
-  const token = req?.headers?.cookie?.split("=")[1];
+  // const token = req?.headers?.cookie?.split("=")[1];
+console.log(req.headers)
+  const token = req.headers?.authorisation.split(" ")[1];
+  console.log(token)
   if (token) {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET) 
-    const {account_no} = decodedToken
+    const {account_no} = decodedToken 
     if (!account_no) {
       return res.status(401).json({success: false, message: "invalid token"})
     }

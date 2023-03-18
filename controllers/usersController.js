@@ -1,4 +1,5 @@
 const PrismaClient = require("@prisma/client").PrismaClient;
+const { PrismaClientKnownRequestError } = require("@prisma/client/runtime");
 const CryptoJS = require("crypto-js");
 
 const prisma = new PrismaClient();
@@ -37,26 +38,29 @@ exports.getAllUsers = async ( req, res) => {
 };
 
 exports.updateAdmin = async (req, res) => {
-  if (req.body.password) {
-    req.body.password = CryptoJS.AES.encrypt(
-      req.body.password,
-      process.env.PASSWORD_SECRET
-    ).toString();
-  }
   try {
+    const account = +req.params.account_no - 1002784563
+    // console.log(req.params.account_no)
     const updatedAdmin = await prisma.user.update({
       where: {
-        account_no: +req.params.account_no,
+        account_no: account,
       },
       data: {
         isAdmin: req.body.isAdmin
       }
     });
     res.status(201).json(updatedAdmin);
-  } catch (err) {
-    res.status(500).json({ err, message: "Operation failed" });
+  } catch (e) {
+    // res.status(500).json({ err, message: "Operation failed" });
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(e)
+    // res.status(500).json({ err, message: "Operation failed" });
+
+    }
+    res.status(500).json({ e, message: "Operation failed" })
   }
 };
+
 exports.updateUser = async (req, res) => {
   if (req.body.password) {
     req.body.password = CryptoJS.AES.encrypt(
