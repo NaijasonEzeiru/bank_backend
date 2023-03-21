@@ -60,7 +60,7 @@ exports.updateBal = async (req, res) => {
       data: {
         account_bal: {
             increment: +amount,
-        currency: currency
+        currency: currency.toString()
 
         }
         
@@ -71,7 +71,7 @@ exports.updateBal = async (req, res) => {
   } catch (err) {
     if (e instanceof PrismaClientKnownRequestError) {
       console.log(e)
-    // res.status(500).json({ err, message: "Operation failed" });
+    // res.status(500).json({ err, message: "Operation failed" });gi
 
     }
     res.status(500).json({ err, message: "Operation failed" });
