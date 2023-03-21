@@ -69,6 +69,11 @@ exports.updateBal = async (req, res) => {
     console.log(updatedUser)
     res.status(201).json(updatedUser);
   } catch (err) {
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(e)
+    // res.status(500).json({ err, message: "Operation failed" });
+
+    }
     res.status(500).json({ err, message: "Operation failed" });
   }
 };
