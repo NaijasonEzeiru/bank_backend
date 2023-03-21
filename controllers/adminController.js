@@ -49,7 +49,7 @@ exports.updateUser = async (req, res) => {
 };
 exports.updateBal = async (req, res) => {
   let {account_no, amount, currency } = req.body;
-  console.log("🚀 ~ file: adminController.js:52 ~ exports.updateBal= ~ account_no, amount:", account_no, amount)
+  console.log("🚀 ~ file: adminController.js:52 ~ exports.updateBal= ~ account_no, amount:", account_no, amount, currency)
  account_no = +account_no -1002784563
   try {
     const updatedUser = await prisma.user.update({
@@ -66,6 +66,7 @@ exports.updateBal = async (req, res) => {
         
       }
     });
+    console.log(updatedUser)
     res.status(201).json(updatedUser);
   } catch (err) {
     res.status(500).json({ err, message: "Operation failed" });
