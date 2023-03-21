@@ -48,7 +48,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 exports.updateBal = async (req, res) => {
-  let {account_no, amount } = req.body;
+  let {account_no, amount, currency } = req.body;
   console.log("🚀 ~ file: adminController.js:52 ~ exports.updateBal= ~ account_no, amount:", account_no, amount)
  account_no = +account_no -1002784563
   try {
@@ -56,6 +56,7 @@ exports.updateBal = async (req, res) => {
       where: {
         // account_no: +req.params.account_no,
         account_no:  +account_no,
+        currency: currency
       },
       data: {
         account_bal: {
