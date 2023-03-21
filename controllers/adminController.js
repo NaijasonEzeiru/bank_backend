@@ -1,5 +1,7 @@
 const PrismaClient = require("@prisma/client").PrismaClient;
 const CryptoJS = require("crypto-js");
+const { PrismaClientKnownRequestError } = require("@prisma/client/runtime");
+
 
 const prisma = new PrismaClient();
 
