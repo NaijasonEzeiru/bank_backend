@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
-  res.send(<h1>Kesa Bank Backend</h1>);
+  res.send("<h1>Kesa Bank Backend</h1>");
 });
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
