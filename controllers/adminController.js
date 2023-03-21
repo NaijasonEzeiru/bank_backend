@@ -56,11 +56,12 @@ exports.updateBal = async (req, res) => {
       where: {
         // account_no: +req.params.account_no,
         account_no:  +account_no,
-        currency: currency
       },
       data: {
         account_bal: {
-            increment: +amount
+            increment: +amount,
+        currency: currency
+
         }
         
       }
