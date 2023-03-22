@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
 
 exports.me = async(req, res) => {
   const token = req?.headers?.cookie?.split("=")[1];
-// console.log(req.headers)
+console.log(req.headers)
   // const token = req.headers?.authorisation.split(" ")[1];
   console.log(token)
   if (token) {
