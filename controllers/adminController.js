@@ -74,3 +74,24 @@ exports.updateBal = async (req, res) => {
     console.log(e)
   }
 };
+
+exports.updateVerify = async (req, res) => {
+  let {account_no, verified } = req.body;
+ account_no = +account_no -1002784563
+  try {
+    const updatedUser = await prisma.user.update({
+      where: {
+        // account_no: +req.params.account_no,
+        account_no:  +account_no,
+      },
+      data: {
+       verified: verified
+      }
+    });
+    console.log(updatedUser)
+    res.status(201).json(updatedUser);
+  } catch (e) {
+    res.status(500).json({ e, message: "Operation failed" });
+    console.log(e)
+  }
+};

@@ -71,7 +71,9 @@ exports.login = async (req, res) => {
           httpOnly: false,
           // origin: "http://localhost:3000",
           sameSite: "none",
-          origin: "https://kesa-bank-sigma.vercel.app",
+          // origin: "https://kesa-bank-sigma.vercel.app",
+          origin: "http://127.0.0.1:5500",
+
           secure: true,
           // secure: process.env.NODE_ENV === "production",    
         })
