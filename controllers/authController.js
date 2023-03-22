@@ -70,8 +70,9 @@ exports.login = async (req, res) => {
         .cookie("access_token", accessToken, {
           httpOnly: false,
           // origin: "http://localhost:3000",
+          sameSite: "none",
           origin: "https://kesa-bank-sigma.vercel.app",
-          secure: false,
+          secure: true,
           // secure: process.env.NODE_ENV === "production",    
         })
         .status(201)
