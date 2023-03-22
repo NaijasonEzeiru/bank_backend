@@ -132,7 +132,7 @@ exports.logout = async(_req, res) => {
   console.log("logout")
  return res
     // .clearCookie("access_token")
-    .cookie("access_token", accessToken, {
+    .cookie("access_token", "accessToken", {
       httpOnly: false,
       // origin: "http://localhost:3000",
       sameSite: "none",
