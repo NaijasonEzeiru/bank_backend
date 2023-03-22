@@ -104,6 +104,7 @@ console.log(req.headers)
     })
     if(!user) {return res.status(401).json("Email address is not registered")};
     const { password_hash, ...rest } = user;
+    console.log(rest)
     const accessToken = jwt.sign(
       {
         account_no: user.account_no,
@@ -130,7 +131,16 @@ console.log(req.headers)
 exports.logout = async(_req, res) => {
   console.log("logout")
  return res
-    .clearCookie("access_token")
+    // .clearCookie("access_token")
+    .cookie("access_token", accessToken, {
+      httpOnly: false,
+      // origin: "http://localhost:3000",
+      sameSite: "none",
+      origin: "https://kesa-bank-sigma.vercel.app",
+      secure: true,
+      // secure: process.env.NODE_ENV === "production", 
+      maxAge: 1   
+    })
     .status(200)
     .json({ message: "You have successfully logged out" });
 };
