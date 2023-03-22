@@ -65,13 +65,13 @@ exports.updateBal = async (req, res) => {
             increment: +amount,
             
           },
-          currency: currency.toString()
-         
+          currency: currency.toString() 
       }
     });
     console.log(updatedUser)
     res.status(201).json(updatedUser);
   } catch (e) {
     res.status(500).json({ e, message: "Operation failed" });
+    console.log(e)
   }
 };

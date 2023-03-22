@@ -55,8 +55,9 @@ exports.updateAdmin = async (req, res) => {
     if (e instanceof PrismaClientKnownRequestError) {
       console.log(e)
     // res.status(500).json({ err, message: "Operation failed" });
-
     }
+    console.log(e)
+
     res.status(500).json({ e, message: "Operation failed" })
   }
 };
