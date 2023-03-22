@@ -9,9 +9,9 @@ const userRouter = require("./routes/api/user");
 const adminRouter = require("./routes/api/admin");
 
 // app.use(cors(corsOptions));
-// app.use(cors({origin:["https://kesa-bank-sigma.vercel.app"], credentials: true}))
+app.use(cors({origin:["https://kesa-bank-sigma.vercel.app", "http://127.0.0.1:5500", "http://kesa.online"], credentials: true}))
 // app.use(cors({origin:["http://127.0.0.1:5500"], credentials: true}))
-app.use(cors({origin:["http://kesa.online"], credentials: true}))
+// app.use(cors({origin:["http://kesa.online"], credentials: true}))
 // app.use(cors({origin:["http://localhost:3001"], credentials: true}))
 
 const corsConfig = {
@@ -19,8 +19,8 @@ const corsConfig = {
   credentials: true
 }
 
-// app.options("https://kesa-bank-sigma.vercel.app", cors(corsConfig))
-app.options("http://kesa.online", cors(corsConfig))
+app.options(["https://kesa-bank-sigma.vercel.app", "http://kesa.online"], cors(corsConfig))
+// app.options("http://kesa.online", cors(corsConfig))
 // app.options("http://127.0.0.1:5500", cors(corsConfig))
 // app.options("http://localhost:3001/", cors(corsConfig))
 

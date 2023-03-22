@@ -74,7 +74,7 @@ exports.login = async (req, res) => {
           // origin: "https://kesa-bank-sigma.vercel.app",
           
           origin: "http://127.0.0.1:5500",
-          origin: "http://kesa.online",
+          // origin: "http://kesa.online",
           secure: true,
           // secure: process.env.NODE_ENV === "production",    
         })
