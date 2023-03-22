@@ -62,10 +62,9 @@ exports.updateBal = async (req, res) => {
       },
       data: {
         account_bal: {
-            increment: +amount,
-            
+            increment: +amount,     
           },
-          currency: currency.toString() 
+        currency: currency
       }
     });
     console.log(updatedUser)
