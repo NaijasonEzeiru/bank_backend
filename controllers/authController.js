@@ -38,7 +38,7 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { email, password } = req.body.loginInfo;
+  const { email, password } = req.body
   console.log(req.body)
   console.log(`${email} and ${password}`)
  if (email) {try {
@@ -67,15 +67,13 @@ exports.login = async (req, res) => {
       );
     rest.account_no = 1002784563 + rest.account_no
       res
-        // .cookie("access_token", accessToken, {
-        //   httpOnly: true,
-        //   // origin: "http://localhost:3000",
-        //   origin: "https://kesa-bank-sigma.vercel.app",
-        //   // secure: true,
-        //   // secure: process.env.NODE_ENV === "production",
-        //   // Access-Control-Allow-Origin: "http://localhost:3000",
-          
-        // })
+        .cookie("access_token", accessToken, {
+          httpOnly: false,
+          // origin: "http://localhost:3000",
+          origin: "https://kesa-bank-sigma.vercel.app",
+          secure: false,
+          // secure: process.env.NODE_ENV === "production",    
+        })
         .status(201)
         .json({ ...rest, Message: "logged in successfully", jwt: accessToken });
     }}
@@ -88,9 +86,9 @@ exports.login = async (req, res) => {
 };
 
 exports.me = async(req, res) => {
-  // const token = req?.headers?.cookie?.split("=")[1];
-console.log(req.headers)
-  const token = req.headers?.authorisation.split(" ")[1];
+  const token = req?.headers?.cookie?.split("=")[1];
+// console.log(req.headers)
+  // const token = req.headers?.authorisation.split(" ")[1];
   console.log(token)
   if (token) {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET) 

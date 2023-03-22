@@ -1,6 +1,6 @@
 const PrismaClient = require("@prisma/client").PrismaClient;
 const CryptoJS = require("crypto-js");
-const { PrismaClientKnownRequestError } = require("@prisma/client/runtime");
+// const { PrismaClientKnownRequestError, PrismaClientUnknownRequestError, PrismaClientRustPanicError } = require("@prisma/client/runtime/library");
 
 
 const prisma = new PrismaClient();
@@ -22,6 +22,7 @@ exports.getAllUsers = async ( req, res) => {
    try {
     const user = await prisma.user.findMany();
     // Filterm password_hash
+    // console.log("users")
     res.status(201).json(user);
   } catch (err) {
     res.status(500).json({ err, message: "User not found" });
@@ -62,20 +63,15 @@ exports.updateBal = async (req, res) => {
       data: {
         account_bal: {
             increment: +amount,
-        currency: currency.toString()
-
-        }
-        
+            
+          },
+          currency: currency.toString()
+         
       }
     });
     console.log(updatedUser)
     res.status(201).json(updatedUser);
   } catch (e) {
-    if (e instanceof PrismaClientKnownRequestError) {
-      console.log(e.code)
-    // res.status(500).json({ err, message: "Operation failed" });gi
-
-    }
     res.status(500).json({ e, message: "Operation failed" });
   }
 };
