@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
       const accessToken = jwt.sign(
         {
           account_no: user.account_no,
-          is_admin: user.is_admin,
+          is_admin: user.isAdmin,
         },
         process.env.JWT_SECRET,
         { expiresIn: "30d" }
@@ -111,7 +111,7 @@ console.log(req.headers)
     const accessToken = jwt.sign(
       {
         account_no: user.account_no,
-        is_admin: user.is_admin,
+        is_admin: user.isAdmin,
       },
       process.env.JWT_SECRET,
       { expiresIn: "3d" }
