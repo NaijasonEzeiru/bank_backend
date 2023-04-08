@@ -1,4 +1,4 @@
-const whitelist = ["http://localhost:4000","https://kesa-bank-sigma.vercel.app", "http://localhost:3000"];
+const whitelist = ["https://kesa-bank-backend3.onrender.com","https://kesa-bank-sigma.vercel.app", "https://kesa-bank-backend3.onrender.com"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {

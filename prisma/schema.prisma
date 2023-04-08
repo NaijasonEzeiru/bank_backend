@@ -8,22 +8,33 @@ datasource db {
 }
 
 model User {
-  password_hash  String
-  fullName       String
-  phoneNumber    String       @unique
-  email          String       @unique
-  isAdmin        Boolean      @default(false)
-  created_at     DateTime     @default(now())
-  account_no     Int          @id @unique @default(autoincrement())
-  account_bal    Int          @default(0)
-  verified       Boolean      @default(false)
-  pending_KYC    Boolean      @default(false)
-  transaction_id Int?         @unique
-  currency       String       @default("$")
-  transaction    Transaction? @relation(fields: [transaction_id], references: [id])
+  password_hash   String
+  fullName        String
+  phoneNumber     String        @unique
+  email           String        @unique
+  isAdmin         Boolean       @default(false)
+  created_at      DateTime      @default(now())
+  account_no      Int           @id @unique @default(autoincrement())
+  account_bal     Int           @default(0)
+  verified        Boolean       @default(false)
+  verifying       Boolean       @default(false)
+  pending_KYC     Boolean       @default(false)
+  transaction_id  Int?          @unique
+  verification_id Int?          @unique
+  currency        String        @default("$")
+  transaction     Transaction?  @relation(fields: [transaction_id], references: [id])
+  verification    Verification? @relation(fields: [verification_id], references: [id])
 }
 
 model Transaction {
   id    Int   @id @default(autoincrement())
   users User?
+}
+
+model Verification {
+  id           Int    @id @default(autoincrement())
+  users        User?
+  user_id      Int
+  identity_doc String
+  address_doc  String
 }

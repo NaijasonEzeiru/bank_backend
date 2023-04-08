@@ -7,7 +7,7 @@ const prisma = new Prisma();
 
 exports.registerUser = async (req, res) => {
   const { password, fullName, phoneNumber, email } = req.body;
-  // console.log(`${password} ${fullName} ${phoneNumber, email}`)
+  console.log(`${password} ${fullName} ${phoneNumber, email}`)
   if (!password || !fullName || !phoneNumber || !email) {
     return res.status(400).json({ message: "All fields are required" });
   } else {
@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
       res
         .cookie("access_token", accessToken, {
           httpOnly: false,
-          // origin: "http://localhost:3000",
+          // origin: "https://kesa-bank-backend3.onrender.com",
           sameSite: "none",
           // origin: "https://kesa-bank-sigma.vercel.app",
           
@@ -96,7 +96,7 @@ console.log(req.headers)
   console.log(token)
   if (token) {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET) 
-    const {account_no} = decodedToken 
+    const {account_no} = decodedToken
     if (!account_no) {
       return res.status(401).json({success: false, message: "invalid token"})
     }
@@ -137,7 +137,7 @@ exports.logout = async(_req, res) => {
     // .clearCookie("access_token")
     .cookie("access_token", "accessToken", {
       httpOnly: false,
-      // origin: "http://localhost:3000",
+      // origin: "https://kesa-bank-backend3.onrender.com",
       sameSite: "none",
       origin: "https://kesa-bank-sigma.vercel.app",
       secure: true,

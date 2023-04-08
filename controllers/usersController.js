@@ -19,7 +19,11 @@ exports.getUser = async ( req, res) => {
 exports.getAllUsers = async ( req, res) => {
   console.log("working")
    try {
-    const user = await prisma.user.findMany();
+    const user = await prisma.user.findMany({
+      include: {
+        verification: true
+      }
+    });
     // Filterm password_hash
     const list = []
     user.forEach((el) => {
@@ -50,6 +54,46 @@ exports.updateAdmin = async (req, res) => {
       }
     });
     res.status(201).json(updatedAdmin);
+  } catch (e) {
+    // res.status(500).json({ err, message: "Operation failed" });
+    if (e instanceof PrismaClientKnownRequestError) {
+      console.log(e)
+    // res.status(500).json({ err, message: "Operation failed" });
+    }
+    console.log(e)
+
+    res.status(500).json({ e, message: "Operation failed" })
+  }
+};
+
+exports.verify = async (req, res) => {
+  try {
+    // const account = +req.params.account_no - 1002784563
+    const account_no = +req.body.account_no - 1002784563
+    const {identity_doc, address_doc, email} = req.body
+    // console.log(req.params.account_no)
+   await prisma.verification.create({
+      data: {
+        user_id: account_no,
+        identity_doc,
+        address_doc,
+        users: {
+          connect: {
+            account_no
+          }
+        }
+      },
+    });
+    await prisma.user.update({ 
+      where: {
+        account_no
+      },
+      data: {
+        verifying: true
+      }
+    }
+    )
+    res.status(201).json({message: "Details submitted sucessfully"});
   } catch (e) {
     // res.status(500).json({ err, message: "Operation failed" });
     if (e instanceof PrismaClientKnownRequestError) {

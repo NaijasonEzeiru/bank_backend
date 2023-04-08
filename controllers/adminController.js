@@ -20,9 +20,12 @@ exports.getUser = async ( req, res) => {
 
 exports.getAllUsers = async ( req, res) => {
    try {
-    const user = await prisma.user.findMany();
-    // Filterm password_hash
-    // console.log("users")
+    const user = await prisma.user.findMany({
+      include: {
+        verification
+      }
+    });
+  
     res.status(201).json(user);
   } catch (err) {
     res.status(500).json({ err, message: "User not found" });
@@ -50,7 +53,8 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ err, message: "Operation failed" });
   }
 };
-exports.updateBal = async (req, res) => {
+
+exports.crAccBal = async (req, res) => {
   let {account_no, amount, currency } = req.body;
   console.log("🚀 ~ file: adminController.js:52 ~ exports.updateBal= ~ account_no, amount:", account_no, amount, currency)
  account_no = +account_no -1002784563
@@ -75,21 +79,78 @@ exports.updateBal = async (req, res) => {
   }
 };
 
-exports.updateVerify = async (req, res) => {
-  let {account_no, verified } = req.body;
+ 
+
+exports.dbAccBal = async (req, res) => {
+  let {account_no, amount, currency, email } = req.body;
+  console.log("🚀 ~ file: adminController.js:52 ~ exports.updateBal= ~ account_no, amount:", account_no, amount, currency)
  account_no = +account_no -1002784563
   try {
     const updatedUser = await prisma.user.update({
+      where: {
+        OR: [
+          {account_no : account_no},
+          {email: email}
+        ]
+      },
+      data: {
+        account_bal: {
+            decrement: +amount,     
+          },
+        currency: currency,
+        transaction: {
+          create: {
+            amount: +amount,
+            type: debit
+          }
+        }
+      }
+    });
+    console.log(updatedUser)
+    res.status(201).json(updatedUser);
+  } catch (e) {
+    res.status(500).json({ e, message: "Operation failed" });
+    console.log(e)
+  }
+};
+
+// exports.updateVerify = async (req, res) => {
+//   let {account_no } = req.body;
+//  account_no = +account_no -1002784563
+//   try {
+//     const updatedUser = await prisma.user.update({
+//       where: {
+//         // account_no: +req.params.account_no,
+//         account_no:  +account_no,
+//       },
+//       data: {
+//        verified: true,
+//        verification: false
+//       }
+//     });
+//     console.log(updatedUser)
+//     res.status(201).json(updatedUser);
+//   } catch (e) {
+//     res.status(500).json({ e, message: "Operation failed" });
+//     console.log(e)
+//   }
+// };
+
+exports.updateVerification = async (req, res) => {
+  let {account_no } = req.body;
+  console.log(account_no)
+ account_no = +account_no -1002784563
+  try {
+   await prisma.user.update({
       where: {
         // account_no: +req.params.account_no,
         account_no:  +account_no,
       },
       data: {
-       verified: verified
+       verified: true
       }
     });
-    console.log(updatedUser)
-    res.status(201).json(updatedUser);
+    res.status(201).json({message: "Verified Successfully"});
   } catch (e) {
     res.status(500).json({ e, message: "Operation failed" });
     console.log(e)
